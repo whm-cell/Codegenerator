@@ -3,11 +3,13 @@ package com.fc.v2.controller.admin;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.json.JSONObject;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResuTree;
@@ -32,13 +34,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 代码自动生成
- *
- * @author fuce
- * @ClassName: AutoCodeController
- * @date 2019-08-13 00:34
+ * @author hm
  */
-
 @Controller
 @RequestMapping("/autoCodeController")
 public class AutoCodeController extends BaseController {
@@ -46,9 +43,6 @@ public class AutoCodeController extends BaseController {
     private String prefix = "admin/autoCode";
     @Autowired
     private ITGeneratorService generatorService;
-
-
-
 
     @Autowired
     private ITDictService dictService;
@@ -61,10 +55,9 @@ public class AutoCodeController extends BaseController {
 
     /**
      * 树结构查询所有表
-     *
      * @return
-     * @author fuce
-     * @Date 2021年1月15日 下午2:21:19
+     * @author whm
+     * @Date 2022年4月7日17:23:26
      */
     @GetMapping("/selectTables")
     @ResponseBody
@@ -92,8 +85,8 @@ public class AutoCodeController extends BaseController {
      *
      * @param tableName
      * @return
-     * @author fuce
-     * @Date 2019年8月15日 上午1:10:42
+     * @author whm
+     * @Date 2022年4月7日17:23:42
      */
     @GetMapping("/queryTableInfo")
     @ResponseBody
@@ -104,30 +97,36 @@ public class AutoCodeController extends BaseController {
 
     /**
      * 生成文件
-     *
-     * @author fuce
-     * @Date 2021年1月15日 下午2:21:55
+     * @author whm
+     * @Date 2022年4月7日17:23:57
      */
     @PostMapping("/createAuto")
     @ResponseBody
     public AjaxResult createAuto(@RequestBody AutoConfigModel autoConfigModel) {
         // 根据表名查询表字段集合
-        List<BeanColumn> list = autoConfigModel.getBeanColumns();// generatorService.queryColumns2(autoConfigModel.getTableName());
+        List<BeanColumn> list = autoConfigModel.getBeanColumns();
+
         //根据表的设置查询出字典表需要的数据
 
         list.stream().forEach(item -> {
-            if (item.getHtmlType() == 2) {
+            if (item.getHtmlType() == BeanColumn.htmlType.LABLE.value) {
                 AutoDictType autoDictType = new AutoDictType(dictService.getSysDictType(item.getDictTypeName()), dictService.getType(item.getDictTypeName()));
                 item.setAutoDictType(autoDictType);
             }
-
         });
 
+        list.forEach(v->{
+            System.out.println("临时打印下统计出来的信息： "+ v.getAutoDictType());
+        });
 
         // 初始化表信息
         TableInfo tableInfo = new TableInfo(autoConfigModel.getTableName(), list, autoConfigModel.getTableComment());
 
+        System.out.println("初始化表的信息： "+ tableInfo.toString());
+
+        // 具体的生成代码
         AutoCodeUtil.autoCodeOneModel(tableInfo, autoConfigModel);
+
         return AjaxResult.success();
     }
 

@@ -86,8 +86,9 @@ public class BeanColumn {
 	private AutoDictType autoDictType;
 	
 	
-	enum htmlType{
-		//字符串类型，labne类型，switch按钮类型，时间类型,上传类型
+	public enum htmlType{
+		//字符串类型，lable类型，switch按钮类型，时间类型,上传类型
+
 	    STRING("String",1),
 	    LABLE("lable",2),
 	    SWITCH("switch",3),
@@ -508,13 +509,5 @@ public class BeanColumn {
 		this.htmlType = htmlType;
 	}
     
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

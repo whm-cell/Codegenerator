@@ -138,4 +138,15 @@ public class TableInfo {
     public static boolean isSuperColumn(String javaField) {
         return StringUtils.equalsAnyIgnoreCase(javaField, BASE_ENTITY);
     }
+
+    @Override
+    public String toString() {
+        return "TableInfo{" +
+                "tableName='" + tableName + '\'' +
+                ", javaTableName='" + javaTableName + '\'' +
+                ", tableComment='" + tableComment + '\'' +
+                ", javaTableName_a='" + javaTableName_a + '\'' +
+                ", beanColumns=" + beanColumns +
+                '}';
+    }
 }

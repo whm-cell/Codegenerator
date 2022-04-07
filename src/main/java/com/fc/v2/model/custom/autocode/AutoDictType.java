@@ -5,10 +5,19 @@ import com.fc.v2.model.auto.TSysDictType;
 
 import java.util.List;
 
+/**
+ * @author haiming
+ * @date 2022年4月7日17:28:10
+ */
 public class AutoDictType {
-	//字典表
+	/**
+	 * 字典表
+	 */
 	private TSysDictType dictType;
-	//字典表里面的数据
+
+	/**
+	 * 字典表里面的数据
+	 */
 	private List<TSysDictData> dictDatas;
 
 	public TSysDictType getDictType() {

@@ -71,25 +71,28 @@ public class AutoCodeUtil {
      */
     public static void autoCodeOneModel(TableInfo tableInfo, AutoConfigModel autoConfigModel) {
         AutoCodeConfig autoCodeConfig = new AutoCodeConfig();
-        //设置velocity资源加载器
+
+        //设置velocity资源加载器 （初始化控件！）
         Properties prop = new Properties();
-        prop.put("file.resource.loader.class" , "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
-        Map<String, Object> map = new HashMap<>();
+
+        Map<String, Object> map = new HashMap<>(16);
+
         //数据库表数据
-        map.put("tableInfo" , tableInfo);
+        map.put("tableInfo", tableInfo);
         //字段集合
-        map.put("beanColumns" , tableInfo.getBeanColumns());
+        map.put("beanColumns", tableInfo.getBeanColumns());
         //配置文件
-        map.put("SnowflakeIdWorker" , SnowflakeIdWorker.class);
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack" , autoCodeConfig.getConfigkey("parentPack"));
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
         //作者
-        map.put("author" , autoConfigModel.getAuthor());
+        map.put("author", autoConfigModel.getAuthor());
         //时间
-        map.put("datetime" , new DateTime());
+        map.put("datetime", new DateTime());
         //sql需要的权限父级pid
-        map.put("pid" , autoConfigModel.getPid());
+        map.put("pid", autoConfigModel.getPid());
 
         VelocityContext context = new VelocityContext(map);
 
@@ -117,7 +120,7 @@ public class AutoCodeUtil {
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                 }
-                
+
                 if (!file.exists()) {
                     file.createNewFile();
                 }
@@ -153,23 +156,23 @@ public class AutoCodeUtil {
         AutoCodeConfig autoCodeConfig = new AutoCodeConfig();
         //设置velocity资源加载器
         Properties prop = new Properties();
-        prop.put("file.resource.loader.class" , "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
         Map<String, Object> map = new HashMap<>();
         //数据库表数据
-        map.put("tableInfo" , tableInfo);
+        map.put("tableInfo", tableInfo);
         //字段集合
-        map.put("beanColumns" , tableInfo.getBeanColumns());
+        map.put("beanColumns", tableInfo.getBeanColumns());
         //配置文件
-        map.put("SnowflakeIdWorker" , SnowflakeIdWorker.class);
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack" , autoCodeConfig.getConfigkey("parentPack"));
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
         //作者
-        map.put("author" , autoConfigModel.getAuthor());
+        map.put("author", autoConfigModel.getAuthor());
         //时间
-        map.put("datetime" , new DateTime());
+        map.put("datetime", new DateTime());
         //sql需要的权限父级pid
-        map.put("pid" , autoConfigModel.getPid());
+        map.put("pid", autoConfigModel.getPid());
 
         VelocityContext velocityContext = new VelocityContext(map);
         //获取模板列表
@@ -199,23 +202,23 @@ public class AutoCodeUtil {
         AutoCodeConfig autoCodeConfig = new AutoCodeConfig();
         //设置velocity资源加载器
         Properties prop = new Properties();
-        prop.put("file.resource.loader.class" , "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
         Map<String, Object> map = new HashMap<>();
         //数据库表数据
-        map.put("tableInfo" , tableInfo);
+        map.put("tableInfo", tableInfo);
         //字段集合
-        map.put("beanColumns" , tableInfo.getBeanColumns());
+        map.put("beanColumns", tableInfo.getBeanColumns());
         //配置文件
-        map.put("SnowflakeIdWorker" , SnowflakeIdWorker.class);
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack" , autoCodeConfig.getConfigkey("parentPack"));
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
         //作者
-        map.put("author" , autoConfigModel.getAuthor());
+        map.put("author", autoConfigModel.getAuthor());
         //时间
-        map.put("datetime" , new DateTime());
+        map.put("datetime", new DateTime());
         //sql需要的权限父级pid
-        map.put("pid" , autoConfigModel.getPid());
+        map.put("pid", autoConfigModel.getPid());
         VelocityContext velocityContext = new VelocityContext(map);
         //获取模板列表
         List<String> templates = getTemplates();
@@ -258,7 +261,7 @@ public class AutoCodeUtil {
         String resourcesPath = targetPath + separator + "src" + separator + "main" + separator + "resources" + separator;
         ;
         if (StringUtils.isNotBlank(packageName)) {
-            packagePath += packageName.replace("." , separator) + separator;
+            packagePath += packageName.replace(".", separator) + separator;
         }
 
         //model.java
@@ -271,16 +274,16 @@ public class AutoCodeUtil {
 
         //daomapper.java
         if (template.contains("EntityMapper.java.vm")) {
-            return packagePath + "Mapper" + separator  + "original" + separator+ tableInfo.getJavaTableName() + "Mapper.java";
+            return packagePath + "Mapper" + separator + "original" + separator + tableInfo.getJavaTableName() + "Mapper.java";
         }
 
         //daomapper.xml
         if (template.contains("EntityMapper.xml.vm")) {
-            return resourcesPath + "mybatis" + separator  + "auto" + separator+ tableInfo.getJavaTableName() + "Mapper.xml";
+            return resourcesPath + "mybatis" + separator + "auto" + separator + tableInfo.getJavaTableName() + "Mapper.xml";
         }
 
         if (template.contains("EntityService.java.vm")) {
-            return packagePath + "Service" + separator + "original" + separator+ "" + tableInfo.getJavaTableName() + "Service.java";
+            return packagePath + "Service" + separator + "original" + separator + "" + tableInfo.getJavaTableName() + "Service.java";
         }
 
         if (template.contains("EntityServiceImpl.java.vm")) {
@@ -288,7 +291,7 @@ public class AutoCodeUtil {
         }
 
         if (template.contains("EntityController.java.vm")) {
-            return packagePath + "Controller" + separator  + "original" + separator+ tableInfo.getJavaTableName() + "Controller.java";
+            return packagePath + "Controller" + separator + "original" + separator + tableInfo.getJavaTableName() + "Controller.java";
         }
 
         if (template.contains("list.html.vm")) {
